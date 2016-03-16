@@ -1,0 +1,19 @@
+notes.txt
+
+Updated November 13, 2012
+
+By Adam Wyner, University of Liverpool
+
+-- The consultation instantiation tool needs to be checked through.  
+How are subsidiary schemes tied to main line propositions?  Is this only in virtue of the SQL queries, which is as it should be.
+
+-- How can I access the results of the consultation?  I've not worked with those queries before.
+
+Nov 14, 2012.
+
+-- In the online tool at UID, the circumstances digressions are not indented, though it appears that other pages work OK.
+
+-- Looking at the tool online, I see that we never implemented the control issue.  
+It is possible for a user to disagree with the default on a radio button, go to a digression, 
+then leave all the defaults in the digression alone.  In effect, we have a contradiction since the defaults in the digression 
+are the justification for the default in the main line.  Not sure what to say about this issue.  Nothing to do about it now.

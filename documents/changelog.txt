@@ -1,0 +1,142 @@
+changelog.txt
+
+Updated Date
+
+November 14, 2012
+
+----------
+In consultationInst.php, there was a typo in the presentation for creation of a new consultation.  The first that should be added is Credible Source Schemes for Circumstances; the typo had Consequences for headers for the Circumstances and Consequences pages.  On line 999 of the code, see note:
+
+/* AZW - Nov 14 corrected a typo here.  Was:
+Print"<legend><h3>Credible Source Schemes - Circumstances</h3></legend>";
+now as below.*/
+
+A minor issue.
+----------
+A typo on line 77 of this code.
+
+/* AZW - November 14, 2012.  There is a typo in the code, though
+ it may not bear on functionality.  cricumstances should be
+ circumstances.  I will consult Maya about making this change.
+ It only appears that this typo is in this section.  The issue about
+ making the change is that we don't want to bind things elsewhere.
+*/
+		
+//the details of the practical reasoning instance
+$prasData =$cdetails[0];
+$cricumstances = $prasData[1];
+
+----------
+
+A more global issue about using the consultation instantiation tool.  Using the pages to input Credible Sources Schemes - Circumstances and Value Credible Sources Schemes is not, apparently, captured by the tool.  In other words, I use the pages to check which schemes to input, and I don't get the output.  Could be a problem on either end (input or output).
+
+I investigated this in the DB itself, and it appears to me that data is not being read to the DB as other changes are written to the DB, but not the ones that I note are missing.  See another note entry below.  Before writing to you, I was going to investigate this in the consultationInst.php page to see if I could find the problem.  But, figure now better to send the note sooner than later.
+
+For instance, on the page that gives output of construction of the consultation:
+
+Practical Reasoning Scheme
+
+Circumstances
+
+1 - Some material held by publishers is not scanned, so it cannot be searched for
+2 - Some material held by publishers is not scanned, so it cannot be used for marketing
+3 - There is no exception to allow libraries to scan materials without seeking permission from the copyright holders
+
+Action
+
+AZW - NOTE HERE - TYPO in 'Consquences'
+
+clarify the law. - Performed by Agent : Legislators
+Consquences
+
+1 - All material held by publishers is scanned, so it can be searched for
+2 - All material held by publishers is scanned, so it can be used for marketing
+3 - There is an exception to allow libraries to scan materials without seeking permission from the copyright holders
+
+Values
+
+1 - Research, learning, and teaching
+2 - Publisher profits
+3 - Legal clarity
+
+Credible Sources Schemes - Circumstances
+
+AZW - NOTE HERE - MISSING OUTPUT.
+
+Credible Sources Schemes - Consequences
+
+- Source: LIBER - In Domain: online research
+Source Proposition: All material held by publishers is scanned, so it can be searched for
+Domain Proposition: All material held by publishers is scanned, so it can be searched for
+- Source: LIBER - In Domain: online research
+Source Proposition: All material held by publishers is scanned, so it can be used for marketing
+Domain Proposition: All material held by publishers is scanned, so it can be used for marketing
+- Source: LIBER - In Domain: online research
+Source Proposition: There is an exception to allow libraries to scan materials without seeking permission from the copyright holders
+Domain Proposition: There is an exception to allow libraries to scan materials without seeking permission from the copyright holders
+
+Value Credible Sources Schemes
+
+AZW - NOTE HERE - MISSING OUTPUT.
+
+Value Recognition Schemes
+
+- Source: LIBER - Value: Legal clarity
+- Source: LIBER - Value: Publisher profits
+- Source: LIBER - Value: Research, learning, and teaching
+
+----------
+
+General question - when we want to use the new consultation in the live tool, how do we do this?  Investigate in the code for how a particular consultation ID is referenced and how to change it.
+
+----------
+
+Concerning adding consultations.  I add the consultation with all the relevant schemes.  This appears in the output in the Consultations table, for example, we have the following TempTest01 added:
+
+ID - Consultation Information - Practical Reasoning - Credible Source - Value Credible Source - Value Recognition
+4- Consultation LIBER- 1 - 6 - 3 - 3
+9- TempTest01 - 1- 3 - 0 - 3
+
+Note that, as indicated above, some schemes were not captured, which is why we only have 3 credible source schemes (should be 6) and no Value Credible Source schemes (should be 3).  Note that the numbers above refer to the *numbers* of instances of a scheme and not to the scheme ID (relevant below).
+
+Turning to the DB itself, impact_UoL_UvA_DB_v1_4.  I can see in the consultation table that my TempTest01 consultation has been added.  In this table, we have
+
+consultation_id = 1, practical_reasoning_as = 1, credible_source_as = 20, value_credible_source_as = 21, value_recognition_as = 22, and consultation_info = TempTest01.
+
+While practical_reasoning_as refers to the ID of the scheme, the others refer to the relevant *occurrence* table since there are multiple instances of the scheme per the consultation.  That seems OK.
+
+What is difficult to tell from the tables is the connection between these auxiliary schemes and the practical reasoning scheme.  To do that, trace back to the scheme instance, to the elements, then back to the proposition in the practical reasoning scheme.
+
+What I'm trying to get at is whether the missing scheme instances reported above.  I can find in the value_recognition_occurrence table *conjunction 22*, but shouldn't this be tied to the ID?  By the same token in the value_credible_source table, I *cannot* find anything that is reference as value_credible_source_as for 21.  I cannot understand where that number comes from, which might explain why it is not being reported.
+
+---------
+
+I am making small changes to SCT 7.2, which is the stand alone version.  How are these changes to be registered in the online tool version?  Having two versions is rather tricky to control the versions, especially since I am entirely unable to install and run the online tool version.
+
+----------
+
+Have to try out the creation of a new consultation.  Question here about the presentation of digression schemes relative to propositions.
+ 
+==========
+
+November 13, 2012
+
+By Adam Wyner, University of Liverpool
+
+-- Have both SCT and the Consultation Instantiation (CI) tools running in a local installation.
+
+-- In correspondence with Maya Wardeh an issue was resolved.  I changed line 35 in the database_connect.php (support folder) to:
+$consultationPath = 'environment_vars/Consultation_Vars.xml';
+
+-- In the CI, there were some format issues and errors.  Currently, the files have:
+
+session_start();
+include('../support/database_connect_admin.php');
+include('admin_utility.php');
+
+I have removed the style file, which seemed to introduce some errors and various layouts:
+
+include('admin_header.php');
+
+
+
