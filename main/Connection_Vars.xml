@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<!-- Note user and password variations.  And the DB changes as need be. -->
+<connection>
+    <connectionaName>localhost</connectionaName>
+    <user>root</user>
+    <password></password>
+    <database>impact_UoL_UvA_DB_v1_4</database>
+ </connection>
